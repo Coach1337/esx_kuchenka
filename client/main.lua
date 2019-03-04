@@ -23,37 +23,25 @@ local Keys = {
 --##AKCJE##
 
 local CurrentAction = nil
-
 local CurrentActionMsg = ''
-
 local CurrentActionData = {}
-
 local HasAlreadyEnteredMarker = false
-
 local LastZone = nil
-
 local kuchenka = vector3(265.858515625, -996.006171875, -100.03701019287)
 
 --##ŁADOWANIE ESX##
 
 
 ESX = nil
-
 local PlayerData = {}
 
 
 Citizen.CreateThread(function ()
-
   while ESX == nil do
-
     TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-
     Citizen.Wait(0)
-
   PlayerData = ESX.GetPlayerData()
-
   end
-
 end)
 
 --##ZAŁADOWANO ESX##
@@ -66,20 +54,14 @@ end)
 --##POBIERANIE PRACY DANEGO GRACZA##
 
 RegisterNetEvent('esx:playerLoaded')
-
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-
   PlayerData = xPlayer
-
 end)
 
 
 RegisterNetEvent('esx:setJob')
-
 AddEventHandler('esx:setJob', function(job)
-
   PlayerData.job = job
-
 end) 
 
 --##KONIEC WSTĘPU##
@@ -173,18 +155,12 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
-
 		if CurrentAction ~= nil then
 			ESX.ShowHelpNotification('Wciśnij ~INPUT_CONTEXT~ aby otworzyć ~y~Kuchenkę~s~.')
-
 			if IsControlJustReleased(0, Keys['E']) then
-
 				if CurrentAction == 'kuchenka' then
-
-          otworzKuchenka()
-
+          			otworzKuchenka()
 				end
-
 				CurrentAction = nil
 			end
 		end
@@ -203,8 +179,7 @@ function otworzKuchenka()
 		elements = 
 		{
 			{ label = 'Tosty z serem', value = 'tost' }, 
-			{ label = 'Herbatka', value = 'herbata' }, 
-			{ label = 'test', value = 'testt' }
+			{ label = 'Herbatka', value = 'herbata' }
 		}
 	}, function(data, menu)
 	
@@ -212,16 +187,13 @@ function otworzKuchenka()
 		
 		if action == 'tost' then
 			TriggerServerEvent('esx_kuchenka:tost')
+			ESX.UI.Menu.CloseAll()
 		elseif action == 'herbata' then
 			TriggerServerEvent('esx_kuchenka:herbata')
-		elseif action == 'testt' then
-			TriggerServerEvent('esx_kuchenka:testt')
-		end
-		
+			ESX.UI.Menu.CloseAll()
+		end		
 	end, function(data, menu)
-	
-		menu.close()
-		
+		menu.close()		
 	end)
 end
 
